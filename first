@@ -1,0 +1,62 @@
+
+
+echo "Step: 10"
+
+read -p "Please enter number from 0 to 9 (q - quit): " answer
+
+case "${input}" in
+    [0-9])
+        echo "Valid input"
+        echo "Input processing started..."
+    ;;
+    q)
+        echo "Bye"
+        echo "Exit..."
+    ;;
+    *)
+        echo "Not valid input"
+        echo "Please repeat"
+    ;;
+esac
+
+random_number=${RANDOM: -1}
+if [[ "${answer}" == "${random_number}" ]]
+    then
+        echo "Hit! My number:$random_number"
+    else
+        echo "Miss! My number: $random_number"
+fi
+
+RED='\e[31m'
+GREEN='\e[32m'
+RESET='\e[0m'
+
+hit=35
+miss=60
+
+total=$(( hit + miss ))
+
+let hit_percent=hit*100/total
+let miss_percent=100-hit_percent
+
+echo "Hit: ${hit_percent}%" "Miss: ${miss_percent}%"
+
+declare -i STEPS=10
+declare -i counter=0
+declare -a numbers
+
+while ((counter < STEPS))
+do
+        number=${RANDOM: -1}
+        if (( number % 2 == 0 )) # проверяем число на четность
+            then
+                number_string="${RED}${number}${RESET}" # четные выделяем красным
+            else
+                number_string="${GREEN}${number}${RESET}" # не четные выделяем зеленым
+        fi
+        numbers+=(${number_string}) # добавляем в конец массива
+        counter+=1
+done
+
+echo "Array length: ${#numbers[@]}"
+echo -e "Numbers: ${numbers[@]: -10}"
