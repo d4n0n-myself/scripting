@@ -1,2 +1,1 @@
-# scripting
-Files for scripting
+Сибаев Данэль 11-121
