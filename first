@@ -1,38 +1,46 @@
 
+hit=0
+miss=0
+step=1
+declare -a numbers
+declare -a correctness
 
-echo "Step: 10"
+while (true)
+do
+
+echo "Step: $step"
 
 read -p "Please enter number from 0 to 9 (q - quit): " answer
 
-case "${input}" in
+case "${answer}" in
     [0-9])
-        echo "Valid input"
-        echo "Input processing started..."
+        
     ;;
     q)
         echo "Bye"
         echo "Exit..."
+	break
     ;;
     *)
         echo "Not valid input"
         echo "Please repeat"
+	continue
     ;;
 esac
-
+step=$((step+1))
 random_number=${RANDOM: -1}
 if [[ "${answer}" == "${random_number}" ]]
     then
         echo "Hit! My number:$random_number"
+	hit=$((hit+1))
     else
         echo "Miss! My number: $random_number"
+	miss=$((miss+1))
 fi
 
 RED='\e[31m'
 GREEN='\e[32m'
 RESET='\e[0m'
-
-hit=35
-miss=60
 
 total=$(( hit + miss ))
 
@@ -41,22 +49,18 @@ let miss_percent=100-hit_percent
 
 echo "Hit: ${hit_percent}%" "Miss: ${miss_percent}%"
 
-declare -i STEPS=10
-declare -i counter=0
-declare -a numbers
+if (( random_number != answer ))
+then
+	number_string="${RED}${random_number}${RESET}" # неверные выделяем красным
+else
+        number_string="${GREEN}${random_number}${RESET}" # верные выделяем зеленым
+fi
+numbers+=(${number_string}) # добавляем в конец массива
 
-while ((counter < STEPS))
-do
-        number=${RANDOM: -1}
-        if (( number % 2 == 0 )) # проверяем число на четность
-            then
-                number_string="${RED}${number}${RESET}" # четные выделяем красным
-            else
-                number_string="${GREEN}${number}${RESET}" # не четные выделяем зеленым
-        fi
-        numbers+=(${number_string}) # добавляем в конец массива
-        counter+=1
+if (( step > 10 ))
+	then
+		echo -e "Numbers: ${numbers[@]: -10}"
+	else
+		echo -e "Numbers: ${numbers[@]}"
+fi
 done
-
-echo "Array length: ${#numbers[@]}"
-echo -e "Numbers: ${numbers[@]: -10}"
