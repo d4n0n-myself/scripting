@@ -30,9 +30,9 @@ echo "fi" >> $name.sh
 
 echo "if [ \$output_dir ]" >> $name.sh
 echo "then" >> $name.sh
-echo "echo \"\$res\" | base64 -d | tar -xz -C \$output_dir " >> $name.sh
+echo "echo \"\$res\" | base64 -d | tar -xvz -C \$output_dir " >> $name.sh
 echo "else" >> $name.sh
-echo "echo \"\$res\" | base64 -d | tar -xz -C ${name} " >> $name.sh
+echo "echo \"\$res\" | base64 -d | tar -xvz -C ${name} " >> $name.sh
 echo "fi" >> $name.sh
 
 chmod 777 $name.sh
